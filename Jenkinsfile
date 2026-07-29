@@ -2,41 +2,31 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                echo 'Downloading Source Code'
-                git branch: 'main',
-                url: 'https://github.com/lokeshmulani/test.git'
+                echo 'Cloning code from Git...'
+                git branch: 'main', url: 'https://github.com/lokeshmulani/test.git'
             }
         }
 
-        stage('Build') {
+        stage('Deploy to Web Server') {
             steps {
-                echo 'Build Started'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running Tests'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying Application'
+                echo 'Deploying files from test directory to Apache root...'
+                // If you just have index.html inside test/:
+                sh 'cp /home/ec2-user/test/index.html /var/www/html/index.html'
+                
+                // OR if you have multiple files/folders inside test/ (images, CSS, JS):
+                // sh 'cp -r test/* /var/www/html/'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline Successful'
+            echo 'Deployment successful!'
         }
-
         failure {
-            echo 'Pipeline Failed'
+            echo 'Deployment failed! Check if test/ folder or files exist.'
         }
     }
 }
