@@ -12,7 +12,12 @@ pipeline {
 stage('Deploy to Web Server') {
     steps {
         echo 'Deploying files to Apache root...'
-        sh 'sudo cp index.html /var/www/html/index.html'
+        sh '''
+        pwd
+        ls -l
+        sudo cp index.html /var/www/html/index.html
+        sudo chmod 644 /var/www/html/index.html
+        '''
     }
 }
     }
