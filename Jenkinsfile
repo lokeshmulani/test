@@ -9,16 +9,12 @@ pipeline {
             }
         }
 
-        stage('Deploy to Web Server') {
-            steps {
-                echo 'Deploying files from test directory to Apache root...'
-                // If you just have index.html inside test/:
-                sh 'cp /home/ec2-user/test/index.html /var/www/html/index.html'
-                
-                // OR if you have multiple files/folders inside test/ (images, CSS, JS):
-                // sh 'cp -r test/* /var/www/html/'
-            }
-        }
+stage('Deploy to Web Server') {
+    steps {
+        echo 'Deploying files to Apache root...'
+        sh 'cp test/index.html /var/www/html/index.html'
+    }
+}
     }
 
     post {
